@@ -1,17 +1,22 @@
 import streamlit as st
 
 # Başlık
-st.title("Python Web GUI Paneli")
+st.title("Mini Chat Uygulaması")
 
-# Kullanıcıdan input al
-text = st.text_input("Bir şey yaz:")
+# Mesaj geçmişini session_state ile sakla
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-# Gönder düğmesi
+# Kullanıcı mesajı input
+user_input = st.text_input("Mesajını yaz:", "")
+
+# Gönder tuşu
 if st.button("Gönder"):
-    if text:  # Boş değilse göster
-        st.success(f"Yazdığın şey: {text}")
-    else:
-        st.warning("Lütfen bir şey yaz!")
+    if user_input:
+        st.session_state.messages.append(f"Kullanıcı: {user_input}")
+        user_input = ""  # inputu temizle
 
-# Ekstra bilgi kutusu
-st.info("Bu uygulama Streamlit ile çalışıyor. Public link üzerinden erişilebilir.")
+# Mesajları göster
+st.write("### Sohbet geçmişi:")
+for msg in st.session_state.messages:
+    st.write(msg)
